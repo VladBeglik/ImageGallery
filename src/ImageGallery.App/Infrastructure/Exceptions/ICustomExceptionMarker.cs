@@ -1,4 +1,4 @@
-namespace BookStore.App.Infrastructure.Exceptions
+namespace ImageGallery.App.Infrastructure.Exceptions
 {
     public interface ICustomExceptionMarker
     {

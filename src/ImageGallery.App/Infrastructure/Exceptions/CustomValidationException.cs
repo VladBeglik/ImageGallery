@@ -1,4 +1,5 @@
 using FluentValidation.Results;
+using ImageGallery.App.Infrastructure.Exceptions;
 
 namespace BookStore.App.Infrastructure.Exceptions
 {

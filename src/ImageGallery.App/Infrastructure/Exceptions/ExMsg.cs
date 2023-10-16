@@ -1,13 +1,15 @@
-namespace BookStore.App.Infrastructure.Exceptions;
+namespace ImageGallery.App.Infrastructure.Exceptions;
 
 public static class ExMsg
 {
-    public static class Book
+    public static class User
     {
-        public static string NotFound() => "Book not found";
-    }  
-    public static class Order
-    {
-        public static string NotFound() => "Order not found";
+        public const string Unauthorized = "Unauthorized";
+
+        public static string AccessDenied() => "Access denied";
+        public static string NotFound() => "User is not found";
+        public static string UserNotCreated() => "Failed to create user";
+        public static string UserNotDeleted() => "Failed to delete user";
+
     }
 }
