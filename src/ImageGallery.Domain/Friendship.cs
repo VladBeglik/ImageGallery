@@ -9,8 +9,7 @@ public class Friendship
     public User User { get; set; }
 
     public string FriendId { get; set; }
-    public User Friend { get; set; }
-    
+
     public FriendshipStatus FriendshipStatus { get; set; }
     public LocalDateTime DateTime { get; set; }
 }

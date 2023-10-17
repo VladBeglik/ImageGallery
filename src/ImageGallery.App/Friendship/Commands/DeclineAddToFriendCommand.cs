@@ -25,7 +25,7 @@ public class DeclineAddToFriendCommandHandler : IRequestHandler<DeclineAddToFrie
         _clock = clock;
     }
 
-    public async Task Handle(DeclineAddToFriendCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeclineAddToFriendCommand request, CancellationToken cancellationToken)
     {
         var userId = _currentUser.UserId;
 
@@ -50,5 +50,7 @@ public class DeclineAddToFriendCommandHandler : IRequestHandler<DeclineAddToFrie
         friendRequest.DateTime = _clock.GetNow();
 
         await _ctx.SaveChangesAsync(cancellationToken);
+        
+        return Unit.Value;
     }
 }

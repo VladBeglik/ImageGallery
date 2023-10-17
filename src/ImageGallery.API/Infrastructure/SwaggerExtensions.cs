@@ -1,9 +1,8 @@
-using System.Reflection;
 using MicroElements.Swashbuckle.NodaTime;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace BookStore.API.Infrastructure
+namespace ImageGallery.API.Infrastructure
 {
     public static class SwaggerExtensions
     {
@@ -36,6 +35,31 @@ namespace BookStore.API.Infrastructure
                     o.DocumentFilter<SwaggerDocumentFilter>(pathBase);
                 }
 
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Name = "JWT Authentication",
+                    Description = "Enter your JWT token",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer", // Если используете другую схему, измените на нее
+                    BearerFormat = "JWT",
+                    Reference = new OpenApiReference
+                    {
+                        Id = "Bearer",
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+                o.AddSecurityDefinition("Bearer", securityScheme);
+
+                var securityRequirement = new OpenApiSecurityRequirement
+                {
+                    {
+                        securityScheme,
+                        Array.Empty<string>()
+                    }
+                };
+                o.AddSecurityRequirement(securityRequirement);
+           
                 o.SwaggerDoc(version, new OpenApiInfo
                 {
                     Title = $"{nameof(BookStore)} API",

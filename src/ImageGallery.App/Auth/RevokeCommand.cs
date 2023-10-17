@@ -20,12 +20,13 @@ public class RevokeCommandHandler : IRequestHandler<RevokeCommand>
     }
 
 
-    public async Task Handle(RevokeCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(RevokeCommand request, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByIdAsync(request.UserId);
         if (user == null) throw new CustomException("Invalid user name");
 
         user.RefreshToken = null;
         await _userManager.UpdateAsync(user);
+        return Unit.Value;
     }
 }

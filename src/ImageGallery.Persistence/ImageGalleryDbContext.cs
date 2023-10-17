@@ -55,6 +55,7 @@ public class ImageGalleryDbContext: DbContext, IImageGalleryDbContext
     {
         builder
             .ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        base.OnModelCreating(builder);
     }
 
     #endregion

@@ -17,13 +17,11 @@ public class RegistrationHandler : IRequestHandler<RegistrationCommand, IActionR
 {
     private readonly UserManager<User> _userManager;
 
-
     public RegistrationHandler(UserManager<User> userManager)
     {
         _userManager = userManager;
 
     }
-
     public async Task<IActionResult> Handle(RegistrationCommand request, CancellationToken cancellationToken)
     {
         var userExists = await _userManager.FindByNameAsync(request.Username);

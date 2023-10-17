@@ -25,7 +25,7 @@ public class RemoveFriendCommandHandler : IRequestHandler<RemoveFriendCommand>
         _clock = clock;
     }
 
-    public async Task Handle(RemoveFriendCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(RemoveFriendCommand request, CancellationToken cancellationToken)
     {
         var userId = _currentUser.UserId;
 
@@ -59,5 +59,7 @@ public class RemoveFriendCommandHandler : IRequestHandler<RemoveFriendCommand>
         _ctx.Friendships.Remove(friendship);
 
         await _ctx.SaveChangesAsync(cancellationToken);
+        
+        return Unit.Value;
     }
 }

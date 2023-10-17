@@ -18,7 +18,7 @@ public class RevokeAllCommandHandler : IRequestHandler<RevokeAllCommand>
         _userManager = userManager;
     }
 
-    public async Task Handle(RevokeAllCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(RevokeAllCommand request, CancellationToken cancellationToken)
     {
         var users = _userManager.Users.ToList();
         foreach (var user in users)
@@ -26,5 +26,7 @@ public class RevokeAllCommandHandler : IRequestHandler<RevokeAllCommand>
             user.RefreshToken = null;
             await _userManager.UpdateAsync(user);
         }
+        
+        return Unit.Value;
     }
 }

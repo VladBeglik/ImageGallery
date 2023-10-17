@@ -1,4 +1,4 @@
-namespace BookStore.API.Infrastructure
+namespace ImageGallery.API.Infrastructure
 {
     public static class CorsExtensions
     {

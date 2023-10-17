@@ -7,7 +7,8 @@ namespace ImageGallery.API.Controllers;
 [Authorize]
 public class FriendshipController : MediatrController
 {
-    [HttpPost]  
+    [HttpPost]
+    [Route("/addfriend")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task AddFriend(AddFriendCommand r)
     {
@@ -15,6 +16,7 @@ public class FriendshipController : MediatrController
     }
     
     [HttpPost]
+    [Route("/removefriend")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task DeleteFriend(RemoveFriendCommand r)
     {
@@ -22,6 +24,7 @@ public class FriendshipController : MediatrController
     }
     
     [HttpPost]
+    [Route("/allow")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task AllowAddToFriends(AllowAddToFriendCommand r)
     {
@@ -30,6 +33,7 @@ public class FriendshipController : MediatrController
     }
 
     [HttpPost]
+    [Route("/decline")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task DeclineAddToFriend(DeclineAddToFriendCommand r)
     {

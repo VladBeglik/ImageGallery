@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ImageGallery.App.Infrastructure;
@@ -16,22 +17,18 @@ public interface ITokenService
 
 public class TokenService : ITokenService
 {
-    private readonly IConfiguration _configuration;
-
-    public TokenService(IConfiguration configuration)
+    private readonly IOptions<AuthOptions> _authOptions;
+    public TokenService(IOptions<AuthOptions> authOptions)
     {
-        _configuration = configuration;
+        _authOptions = authOptions;
     }
 
     public JwtSecurityToken  GenerateAccessToken(IEnumerable<Claim> claims)
     {
-        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("qweqweqweqweqweqwqwe"));
-        _ = int.TryParse(_configuration["JWT:TokenValidityInMinutes"], out int tokenValidityInMinutes);
+        var authSigningKey = _authOptions.Value.GetSymmetricSecurityKey();
 
         var token = new JwtSecurityToken(
-            issuer: "https://localhost:5001",
-            audience: "https://localhost:5003",
-            expires: DateTime.Now.AddMinutes(tokenValidityInMinutes),
+
             claims: claims,
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
         );
@@ -51,10 +48,10 @@ public class TokenService : ITokenService
     {
         var tokenValidationParameters = new TokenValidationParameters
         {
-            ValidateAudience = false,
-            ValidateIssuer = false,
+            ValidateAudience = true,
+            ValidateIssuer = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"])),
+            IssuerSigningKey = _authOptions.Value.GetSymmetricSecurityKey(),
             ValidateLifetime = false
         };
 

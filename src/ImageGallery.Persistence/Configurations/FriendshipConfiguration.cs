@@ -12,13 +12,15 @@ public class FriendshipConfiguration : IEntityTypeConfiguration<Friendship>
             .HasKey(f => new { f.UserId, f.FriendId });
 
         builder
-            .HasOne(f => f.User)
-            .WithMany(u => u.Friendships)
-            .HasForeignKey(f => f.UserId);
+            .HasOne(x => x.User)
+            .WithMany(x => x.Friendships)
+            .HasForeignKey(x => x.FriendId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
-            .HasOne(f => f.Friend)
-            .WithMany()
-            .HasForeignKey(f => f.FriendId);
+            .HasOne(x => x.User)
+            .WithMany(e => e.Friendships)
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

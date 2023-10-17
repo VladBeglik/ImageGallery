@@ -39,23 +39,17 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, IActionResult>
         if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password!))
             return new UnauthorizedResult();
         
-        var userRoles = await _userManager.GetRolesAsync(user);
-
         var authClaims = new List<Claim>
         {
             new(JwtClaimTypes.Subject, user.Id),
             new(JwtRegisteredClaimNames.UniqueName, user.UserName),
         };
             
-        authClaims.AddRange(userRoles.Select(userRole => new Claim(JwtClaimTypes.Role, userRole)));
-
         var token = _tokenService.GenerateAccessToken(authClaims);
         var refreshToken = _tokenService.GenerateRefreshToken();
 
-        _ = int.TryParse(_configuration["JWT:RefreshTokenValidityInDays"], out var refreshTokenValidityInDays);
 
         user.RefreshToken = refreshToken;
-        user.RefreshTokenExpiryTime = _clock.GetNow().PlusDays(refreshTokenValidityInDays);
 
         await _userManager.UpdateAsync(user);
 
