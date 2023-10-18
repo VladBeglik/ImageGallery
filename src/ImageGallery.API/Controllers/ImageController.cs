@@ -1,8 +1,12 @@
 ﻿using ImageGallery.App.Images.Commands;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImageGallery.API.Controllers;
 
+
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class ImageController : MediatrController
 {
     [HttpPost("upload")]
@@ -13,11 +17,12 @@ public class ImageController : MediatrController
         return Ok();
     }
 
-    [HttpGet("{imageId}")]
+    [HttpPost]
+    [Route("/getImage")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetImage(GetImageCommand r)
     {
         var res = await Mediator.Send(r);
-        return Ok(res);
+        return new JsonResult(res);
     }
 }

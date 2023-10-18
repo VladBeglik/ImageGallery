@@ -54,7 +54,7 @@ public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand>
         {
             await using var tr = await _ctx.BeginTransactionAsync(cancellationToken);
             await _ctx.SaveChangesAsync(cancellationToken);
-            _localImageService.UploadImage(request.File);
+            await _localImageService.UploadImage(request.File);
             await tr.CommitAsync(cancellationToken);
         });
 

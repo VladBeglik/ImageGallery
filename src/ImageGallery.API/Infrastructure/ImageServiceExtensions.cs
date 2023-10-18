@@ -6,20 +6,24 @@ public static class ImageServiceExtensions
 {
     public static IServiceCollection AddLocalStorage(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<ILocalImageService, LocalImageService>();
-        services.Configure<FileServiceOptions>(configuration.GetSection("FileServiceOptions"));
 
-        var storageDirectory = configuration["FileServiceOptions:StorageDirectory"];
-
-        if (Directory.Exists(storageDirectory)) return services;
+        var fileServiceOptionsConfigurationSection = configuration.GetSection("FileServiceOptions");
+        services.Configure<FileOptions>(fileServiceOptionsConfigurationSection);
+        var fileOptions = fileServiceOptionsConfigurationSection.Get<FileOptions>();
+        var startDirectory = Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName);
+        var path = Path.Combine(startDirectory.FullName, fileOptions.StorageDirectory);
         
-        if (storageDirectory != null) Directory.CreateDirectory(storageDirectory);
+        if (Directory.Exists(fileOptions.StorageDirectory)) return services;
 
+        if (fileOptions.StorageDirectory != null) Directory.CreateDirectory(path);
+
+        services.AddScoped<ILocalImageService>(_ => new LocalImageService(path));
+        
         return services;
     }
 }
 
-public class FileServiceOptions
+public class FileOptions
 {
     public string StorageDirectory { get; set; } 
 }

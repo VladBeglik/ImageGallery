@@ -1,4 +1,5 @@
 ﻿using ImageGallery.App.Auth;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,7 +37,7 @@ public class AuthController : MediatrController
         return result;
     }
 
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPost]
     [Route("revoke/{username}")]
     public async Task<IActionResult> Revoke(string userId)
@@ -45,7 +46,7 @@ public class AuthController : MediatrController
         return NoContent();
     }
 
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPost]
     [Route("revoke-all")]
     public async Task<IActionResult> RevokeAll()

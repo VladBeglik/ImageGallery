@@ -42,7 +42,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, IActionResult>
         var authClaims = new List<Claim>
         {
             new(JwtClaimTypes.Subject, user.Id),
-            new(JwtRegisteredClaimNames.UniqueName, user.UserName),
+            new(JwtClaimTypes.Name, user.UserName),
         };
             
         var token = _tokenService.GenerateAccessToken(authClaims);

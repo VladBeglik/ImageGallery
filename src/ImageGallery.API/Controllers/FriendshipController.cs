@@ -1,10 +1,11 @@
 ﻿using ImageGallery.App.Friendship.Commands;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImageGallery.API.Controllers;
 
-[Authorize]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class FriendshipController : MediatrController
 {
     [HttpPost]

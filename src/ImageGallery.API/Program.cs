@@ -69,7 +69,7 @@ if (app.Environment.IsDevelopment())
     }).UseCors(CorsPolicy.DEFAULT);
 }
 
-app.UseMiddleware<JwtMiddleware>();
+
 app.UseStaticFiles();
 app.UseRouting();
 
