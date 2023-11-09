@@ -54,7 +54,7 @@ public class GetImageCommandHandler : IRequestHandler<GetImageCommand, string>
         var image = await _ctx.Images.FirstOrDefaultAsync(_ => _.Id == request.Id && _.UserId == userId, cancellationToken: cancellationToken);
         
         if (image == default)
-            throw new CustomException();
+            throw new CustomException(ExMsg.Image.NotFound());
         
         var base64Image = await _localImageService.GetImageAsync(image.FileName);
         return base64Image;

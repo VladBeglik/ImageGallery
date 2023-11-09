@@ -38,23 +38,23 @@ public class RemoveFriendCommandHandler : IRequestHandler<RemoveFriendCommand>
         var friend = await _ctx.Users.FirstOrDefaultAsync(_ => _.Id == request.FriendId, cancellationToken: cancellationToken);
 
         if (friend == default)
-            throw new CustomException();
+            throw new CustomException(ExMsg.Friendship.NotFound());
 
         if (!await _ctx.Friendships.AnyAsync(_ => _.UserId == userId && _.FriendId == friend.Id && _.FriendshipStatus == FriendshipStatus.Pending, cancellationToken: cancellationToken))
         {
-            throw new InvalidOperationException("Заявка в друзья уже отправлена этому пользователю.");
+            throw new CustomException("Заявка в друзья уже отправлена этому пользователю.");
         }
         
         if (friend.Id == userId)
         {
-            throw new InvalidOperationException("Вы не можете отправить заявку в друзья самому себе.");
+            throw new CustomException("Вы не можете отправить заявку в друзья самому себе.");
         }
 
         var friendship = await _ctx.Friendships.FirstOrDefaultAsync(_ =>
             _.FriendshipStatus == FriendshipStatus.Accepted && _.UserId == userId && _.FriendId == friend.Id, cancellationToken: cancellationToken);
 
         if (friendship == default)
-            throw new CustomException();
+            throw new CustomException(ExMsg.Friendship.NotFound());
 
         _ctx.Friendships.Remove(friendship);
 

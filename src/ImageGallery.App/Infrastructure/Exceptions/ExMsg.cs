@@ -12,4 +12,16 @@ public static class ExMsg
         public static string UserNotDeleted() => "Failed to delete user";
 
     }
+    public static class Image
+    {
+        public static string NotFound() => "Image is not found";
+
+
+    } 
+    
+    public static class Friendship
+    {
+        public static string NotFound() => "not found";
+
+    }
 }

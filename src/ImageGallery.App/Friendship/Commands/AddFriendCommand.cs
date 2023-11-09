@@ -42,17 +42,17 @@ public class AddFriendCommandHandler : IRequestHandler<AddFriendCommand>
 
         if (!await _ctx.Friendships.AnyAsync(_ => _.UserId == userId && _.FriendId == friend.Id && _.FriendshipStatus == FriendshipStatus.Accepted, cancellationToken: cancellationToken))
         {
-            throw new InvalidOperationException("Вы уже друзья с этим пользователем.");
+            throw new CustomException("Вы уже друзья с этим пользователем.");
         }
         
         if (!await _ctx.Friendships.AnyAsync(_ => _.UserId == userId && _.FriendId == friend.Id && _.FriendshipStatus == FriendshipStatus.Pending, cancellationToken: cancellationToken))
         {
-            throw new InvalidOperationException("Заявка в друзья уже отправлена этому пользователю.");
+            throw new CustomException("Заявка в друзья уже отправлена этому пользователю.");
         }
 
         if (friend.Id == userId)
         {
-            throw new InvalidOperationException("Вы не можете отправить заявку в друзья самому себе.");
+            throw new CustomException("Вы не можете отправить заявку в друзья самому себе.");
         }
 
 
